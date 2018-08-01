@@ -23,7 +23,7 @@ var html = `
 			color: #FFFFFF;
 			font-family: monospace;
 			padding: 10px;
-			position: absolute;
+			position: fixed;
 			top: 10px;
 			right: 10px;
 			border-radius: 5px;
