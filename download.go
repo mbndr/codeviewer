@@ -1,14 +1,14 @@
 package codeviewer
 
 import (
-	"path/filepath"
-	"net/http"
-	"io"
 	"encoding/json"
-	"os"
 	"errors"
-	"strings"
+	"io"
 	"log"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"gopkg.in/urfave/cli.v1"
 )
@@ -21,24 +21,23 @@ const (
 
 	// added to cdnUrl
 	cdnLanguagePath = "languages"
-	cdnStylesPath = "styles"
+	cdnStylesPath   = "styles"
 )
 
 // CmdDownload downloads all js and css files for hljs
 var CmdDownload = cli.Command{
-	Name: "download",
-	Usage: "Download all hljs styles and languages from jsdelivr to local cache",
+	Name:   "download",
+	Usage:  "Download all hljs styles and languages from jsdelivr to local cache",
 	Action: download,
 }
-
 
 func download(c *cli.Context) error {
 	var err error
 
 	stylePath := filepath.Join(ConfigDir, StyleDir)
 	langPath := filepath.Join(ConfigDir, LangDir)
-	
-	//  create subfolders 
+
+	//  create subfolders
 	if err = os.MkdirAll(stylePath, 0777); err != nil {
 		return err
 	}
@@ -63,7 +62,7 @@ func download(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// iter through all files and save them in spec location
 	for _, file := range files.Files {
 		err = downloadFile(file.Name)
@@ -71,8 +70,7 @@ func download(c *cli.Context) error {
 			log.Println("error downloading " + file.Name + ": " + err.Error())
 		}
 	}
-	
-	
+
 	return nil
 }
 
@@ -109,7 +107,7 @@ func downloadFile(name string) error {
 
 // this is gotten by one request to the jsdelivr api
 type apiFiles struct {
-	Files []struct{ // one object is one file
+	Files []struct { // one object is one file
 		Name string `json:"name"`
 	} `json:"files"`
 }

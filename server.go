@@ -1,38 +1,38 @@
 package codeviewer
 
 import (
-	"log"
 	"errors"
-	"net/http"
+	"fmt"
 	"html/template"
-	"io/ioutil"
 	"io"
-	"strings"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"os"
 	"path/filepath"
-	"fmt"
+	"strings"
 
-	"gopkg.in/urfave/cli.v1"
 	"github.com/julienschmidt/httprouter"
+	"gopkg.in/urfave/cli.v1"
 )
 
 // CmdServe serves a web server to look at the code
 var CmdServe = cli.Command{
-	Name: "serve",
+	Name:  "serve",
 	Usage: "Serve the website",
 	Flags: []cli.Flag{
 		cli.StringFlag{
-			Name: "file, f",
+			Name:  "file, f",
 			Value: "",
 			Usage: "File to display",
 		},
 		cli.StringFlag{
-			Name: "lang",
+			Name:  "lang",
 			Value: "",
 			Usage: "Language to highlight for (hljs class)", // TODO can also be set in overlay
 		},
 		cli.StringFlag{
-			Name: "addr",
+			Name:  "addr",
 			Value: ":8080",
 			Usage: "Adress to listen on",
 		},
@@ -42,16 +42,15 @@ var CmdServe = cli.Command{
 
 var (
 	codefile string
-	td templateData
+	td       templateData
 )
-
 
 // given to the template
 type templateData struct {
-	Filename string
-	Theme string
-	Language string
-	Content string
+	Filename  string
+	Theme     string
+	Language  string
+	Content   string
 	ThemeList map[string]string
 }
 
@@ -71,10 +70,10 @@ func serve(c *cli.Context) error {
 
 	// preparing templateData
 	td = templateData{
-		Content: "No code here",
-		Filename: codefile,
-		Language: l,
-		Theme: getLastTheme(),
+		Content:   "No code here",
+		Filename:  codefile,
+		Language:  l,
+		Theme:     getLastTheme(),
 		ThemeList: getThemeList(),
 	}
 
@@ -83,7 +82,7 @@ func serve(c *cli.Context) error {
 	r.GET("/", index)
 	r.GET("/highlight.min.js", hljs)
 	r.GET("/style/:name", style)
-	r.GET("/lang/:name", lang)	
+	r.GET("/lang/:name", lang)
 	r.GET("/set-style/:name", setStyle) // used by ajax call
 
 	log.Println("listening on " + c.String("addr"))
@@ -97,13 +96,13 @@ func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	tmpl.Parse(html)
 
 	// reread content on each request
-    data, err := ioutil.ReadFile(codefile)
+	data, err := ioutil.ReadFile(codefile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	td.Content = string(data);
-	td.Theme = getLastTheme();
+	td.Content = string(data)
+	td.Theme = getLastTheme()
 
 	err = tmpl.Execute(w, td)
 	if err != nil {
@@ -120,13 +119,13 @@ func style(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 // serve language
 func lang(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	w.Header().Set("Content-Type", "text/javascript")
-    fileToWriter(w, filepath.Join(ConfigDir, LangDir, p.ByName("name")))
+	fileToWriter(w, filepath.Join(ConfigDir, LangDir, p.ByName("name")))
 }
 
 // serve language
 func hljs(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	w.Header().Set("Content-Type", "text/javascript")
-    fileToWriter(w, filepath.Join(ConfigDir, "highlight.min.js"))
+	fileToWriter(w, filepath.Join(ConfigDir, "highlight.min.js"))
 }
 
 // set current theme
@@ -184,7 +183,7 @@ func getThemeList() map[string]string {
 		}
 
 		name = strings.TrimSuffix(fi.Name(), ".min.css")
-		
+
 		l[name] = prettyName(name)
 	}
 

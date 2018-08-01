@@ -8,8 +8,6 @@ import (
 	"gopkg.in/urfave/cli.v1"
 )
 
-
-
 func main() {
 	// config dir must be specified
 	codeviewer.ConfigDir = codeviewer.GetConfigDir()
@@ -23,7 +21,7 @@ func main() {
 
 	app.Commands = []cli.Command{
 		codeviewer.CmdDownload, // Download all hljs styles
-		codeviewer.CmdServe, // Run webserver
+		codeviewer.CmdServe,    // Run webserver
 	}
 
 	err := app.Run(os.Args)
