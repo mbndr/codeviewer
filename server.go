@@ -86,9 +86,10 @@ func serve(c *cli.Context) error {
 	r.GET("/set-style/:name", setStyle) // used by ajax call
 
 	log.Println("listening on " + c.String("addr"))
-	http.ListenAndServe(c.String("addr"), r)
-	return nil
+	return http.ListenAndServe(c.String("addr"), r)
 }
+
+// HTTP HANDLERS
 
 // display code
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -108,6 +109,7 @@ func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
 
 // serve style
@@ -135,6 +137,8 @@ func setStyle(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		log.Println("cannot set last-style")
 	}
 }
+
+// END HTTP HANDLERS
 
 // open a file and write it to the writer
 func fileToWriter(w io.Writer, p string) {

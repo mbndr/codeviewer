@@ -20,7 +20,7 @@ func main() {
 	app.Usage = "view highlighted source code in the browser"
 
 	app.Commands = []cli.Command{
-		codeviewer.CmdDownload, // Download all hljs styles
+		codeviewer.CmdDownload, // Download all hljs assets
 		codeviewer.CmdServe,    // Run webserver
 	}
 

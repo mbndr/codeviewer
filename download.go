@@ -14,10 +14,12 @@ import (
 )
 
 const (
+	// version of highlightjs to download
+	hljsVersion = "9.12.0"
 	// get all file names
-	apiUrl = "https://data.jsdelivr.com/v1/package/gh/highlightjs/cdn-release@9.12.0/flat"
+	apiUrl = "https://data.jsdelivr.com/v1/package/gh/highlightjs/cdn-release@" + hljsVersion + "/flat"
 	// download the files
-	cdnUrl = "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/"
+	cdnUrl = "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@" + hljsVersion + "/"
 
 	// added to cdnUrl
 	cdnLanguagePath = "languages"
@@ -63,7 +65,7 @@ func download(c *cli.Context) error {
 		return err
 	}
 
-	// iter through all files and save them in spec location
+	// iter through all files and save them in the correct location
 	for _, file := range files.Files {
 		err = downloadFile(file.Name)
 		if err != nil {

@@ -14,7 +14,7 @@ var (
 	LangDir string = "languages"
 )
 
-// GetConfigDir returns the default config which is default in the cli tool
+// GetConfigDir returns the config directory which is default in the cli tool
 func GetConfigDir() string {
 	// $XDG_CONFIG_HOME
 	if d := os.Getenv("XDG_CONFIG_HOME"); d != "" {
